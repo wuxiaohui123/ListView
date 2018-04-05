@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>插件页面</title>
+    <style type="text/css">
+        .query {
+            background-image: url("../images/icon_query.gif");
+        }
+
+        .alert {
+            background-image: url("../images/icon_alert.gif");
+        }
+    </style>
+    <link rel="stylesheet" href="css/jquery.listview.css"/>
+    <script src="jquery-1.11.2.js"></script>
+    <script src="jquery.listview-v2.js"></script>
+</head>
+<body>
+<div id="list"></div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var data = [];
+        for (var i = 1; i <= 10000; i++) {
+            var o = {};
+            o.id = i;
+            o.name = "listview  to " + i;
+            o.icon = "query";
+            data.push(o);
+        }
+        var list = $("#list").ListView({
+            data: data,
+            isItemIcon: false,
+            itemIcon: "query",
+            isAutoSearch: false,
+            searchKey: "name",
+            itemDisplayTemplate:"({id})-{name}",
+            isAsync: false,
+            asyncUrl: "http://localhost:8080/myweb/MyPageDataServlet.do?type=query",
+            paging: {
+                enable:true,
+                size: 300,
+                showSummary: true,
+                //summaryTemplate: 'Displaying {startRow}-{endRow} of {totalRow} results'
+                summaryTemplate: '第{currentPage}页/共{totalPage}页'
+            },
+            itemOperation:{
+                showEditBtn: true,
+                showDeleteBtn: true,
+                editUrl: "http://localhost:8080/myweb/MyPageDataServlet.do",
+                deleteUrl: "http://localhost:8080/myweb/MyPageDataServlet.do?type=delete"
+            },
+            itemClick: function (res) {
+                console.log(res);
+            }
+        });
+        /*$("#list").listView("setListData",data);*/
+
+    })
+</script>
+</html>
